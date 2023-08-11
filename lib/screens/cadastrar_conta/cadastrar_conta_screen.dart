@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:gerenciamento_financas_pessoais/models/conta.dart';
+import 'package:gerenciamento_financas_pessoais/screens/home/home_screen.dart';
+import 'package:gerenciamento_financas_pessoais/services/conta_service.dart';
 
 class CadastroContaScreen extends StatelessWidget {
   CadastroContaScreen({super.key});
 
   final _nomeController = TextEditingController();
   final _valorController = TextEditingController();
+  ContaService cs = ContaService();
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +32,7 @@ class CadastroContaScreen extends StatelessWidget {
                 TextFormField(
                   controller: _valorController,
                   keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(),
+                  decoration: const InputDecoration(labelText: "Valor"),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(
@@ -40,7 +44,12 @@ class CadastroContaScreen extends StatelessWidget {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
-                        print(_valorController);
+                        Conta novaConta = Conta(
+                            nome: _nomeController.text,
+                            valor: double.parse(_valorController.text));
+                        cs.adicionarConta(novaConta);
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (_) => const HomeScreen()));
                       },
                       child: const Text(
                         'Cadastrar',
